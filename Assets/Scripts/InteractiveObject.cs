@@ -6,6 +6,12 @@ public class InteractiveObject : MonoBehaviour, IActivatable
 {
     public void DoActivate()
     {
-        throw new System.NotImplementedException();
+        Debug.Log(transform.name + " was activated");
     }
+
+    private void Start()
+    {
+        DoActivate();
+    }
+
 }
