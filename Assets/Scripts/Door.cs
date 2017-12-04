@@ -4,7 +4,18 @@ using UnityEngine;
 
 public class Door : MonoBehaviour, IActivatable
 {
+    [SerializeField]
+    private string nameText;
+
     private Animator animator;
+
+    public string NameText
+    {
+        get
+        {
+            return nameText;
+        }
+    }
 
     private void Start()
     {
