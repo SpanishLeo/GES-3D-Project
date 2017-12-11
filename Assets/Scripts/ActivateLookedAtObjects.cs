@@ -4,63 +4,54 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ActivateLookedAtObjects : MonoBehaviour
+public class ActivateLookedAtObjects : MonoBehaviour 
 {
-    //this script must be attached to the FPS camera
-
     [SerializeField]
-    private float maxDistanceToCheckForObjects = 4.0f;
+    private float maxActivateDistance = 6.0f;
 
     [SerializeField]
     private Text lookedAtObjectText;
 
-    private IActivatable lookedAtObject;
-
-    private void Update()
+    private IActivatable objectLookedAt;
+	
+	void FixedUpdate ()
     {
-        UpdateLookedAtObject();
-        UpdateLookedAtObkectText();
-        HandleInput();
+        Debug.DrawRay(transform.position, transform.forward * maxActivateDistance);
+
+        UpdateObjectLookedAt();
+        UpdateLookedAtObjectText();
+        ActivateLookedAtObject();
     }
 
-    private void UpdateLookedAtObkectText()
+    private void ActivateLookedAtObject()
     {
-        if (lookedAtObject == null)
+        if (objectLookedAt != null)
         {
-            lookedAtObjectText.text = string.Empty;
+            if (Input.GetButtonDown("Fire1"))
+            {
+                objectLookedAt.DoActivate();
+            }
         }
+    }
+
+    private void UpdateLookedAtObjectText()
+    {
+        if (objectLookedAt != null)
+            lookedAtObjectText.text = objectLookedAt.NameText;
         else
-        {
-            lookedAtObjectText.text = lookedAtObject.NameText;
-        }
+            lookedAtObjectText.text = "";
     }
 
-    private void UpdateLookedAtObject()
+    private void UpdateObjectLookedAt()
     {
-        Debug.DrawRay(transform.position, transform.forward * maxDistanceToCheckForObjects, Color.red);
+        RaycastHit hit;
+        objectLookedAt = null;
 
-        RaycastHit raycastHit;
-
-        if (Physics.Raycast(transform.position, transform.forward,
-            out raycastHit, maxDistanceToCheckForObjects))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, maxActivateDistance))
         {
-            Debug.Log(raycastHit.transform.name + " is being looked at");
+            Debug.Log("Hit: " + hit.transform.name);
 
-            lookedAtObject = raycastHit.transform.GetComponent<IActivatable>();
-        }
-        else
-        {
-            lookedAtObject = null;
-        }
-    }
-
-    private void HandleInput()
-    {
-        if (lookedAtObject != null && Input.GetButtonDown("Activate"))
-        {
-            Debug.Log("This is an IActivatable");
-
-            lookedAtObject.DoActivate();
+            objectLookedAt = hit.transform.GetComponent<IActivatable>();
         }
     }
 }

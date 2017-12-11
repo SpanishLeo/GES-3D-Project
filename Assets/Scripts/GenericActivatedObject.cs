@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractiveObject : MonoBehaviour, IActivatable
+public class GenericActivatedObject : MonoBehaviour, IActivatable 
 {
     [SerializeField]
-    private string nameText;
+    private string nameText = "Generic Activated Object";
 
     public string NameText
     {
@@ -17,11 +17,6 @@ public class InteractiveObject : MonoBehaviour, IActivatable
 
     public void DoActivate()
     {
-        Debug.Log(transform.name + " was activated");
-    }
-
-    private void Start()
-    {
-        DoActivate();
+        Debug.Log(this.gameObject.name + " was activated.");
     }
 }

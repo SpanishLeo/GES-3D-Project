@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryMenuItem : MonoBehaviour {
+public class InventoryMenuItem : MonoBehaviour 
+{
+    private InventoryMenu inventoryMenu;
 
-	// Use this for initialization
-	void Start () {
-		
+    public InventoryObject InventoryObjectRepresented { get; set; }
+
+    void Start () 
+	{
+        inventoryMenu = FindObjectOfType<InventoryMenu>();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    public void OnValueChanged()
+    {
+        // Update the description area text!
+        inventoryMenu.UpdateDescriptionAreaText(InventoryObjectRepresented.DescriptionText);
+    }
 }
